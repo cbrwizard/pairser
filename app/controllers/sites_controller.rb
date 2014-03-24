@@ -7,6 +7,7 @@ class SitesController < ApplicationController
   # Parses a link and grabs all goods' info
   # @todo create check for nil
   # @todo create redirect with notice
+  # @todo create check for invalid image
   def parse
 
     #
@@ -17,14 +18,51 @@ class SitesController < ApplicationController
       #
       browser = Watir::Browser.new :phantomjs
       browser.goto website
-      main_image_path = browser.element(css: ".product .image img").attribute_value('src')
-      title = browser.element(css: ".info.box h2").text
+      main_image_path = browser.element(css: site.main_image_selector).attribute_value('src')
+      title = browser.element(css: site.name_selector).text
+
 
       #
-      main_image = Image.create(website: main_image_path)
-      good = current_user.goods.create(name: title, main_image_id: main_image.id)
+      main_image = Image.where(website: main_image_path).first_or_create
+      good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
       main_image.good_id = good.id
       main_image.save
+
+
+      # If other images are accessable without any actions
+      if site.images_selector.present?
+        buttons = browser.elements(css: site.images_selector)
+        buttons.each do |button|
+          if button.visible?
+            begin
+              button.click
+              ad_image_path = browser.element(css: site.main_image_selector).attribute_value('src')
+              Image.create(website: ad_image_path, good_id: good.id)
+            rescue
+              "skipping image"
+            end
+          end
+        end
+      # If thumbnails must be clicked to get other images
+      elsif site.button_selector.present?
+        buttons = browser.elements(css: site.button_selector)
+        buttons.each do |button|
+          if button.visible?
+            begin
+              button.click
+              browser.wait_until{main_image_path != browser.element(css: site.main_image_selector).attribute_value('src')}
+              ad_image_path = browser.element(css: site.main_image_selector).attribute_value('src')
+              Image.create(website: ad_image_path, good_id: good.id)
+            rescue
+              "skipping image"
+            end
+          end
+        end
+      end
+
+      if good.persisted?
+        redirect_to my_goods_path
+      end
     else
       #
       parse_request = ParseRequest.find_by_domain(website_domain)
