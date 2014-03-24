@@ -7,6 +7,7 @@
     = csrf_meta_tags
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
   %body
-    = render partial: "elements/navbar"
     = bootstrap_flash
-    = yield
+    = render partial: "elements/navbar"
+    .container
+      = yield

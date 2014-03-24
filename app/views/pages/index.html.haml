@@ -1,2 +1,18 @@
-%h1 Pages#index
-%p Find me in app/views/pages/index.html.erb
+.jumbotron
+  -if user_signed_in?
+    %h1
+      Привет снова!
+    %p
+      Введи сюда ссылку на понравившуюся тебе вещь, чтобы сохранить её
+    .input-group
+      %input.form-control{type: "text"}
+      %span.input-group-btn
+        %button.btn.btn-default{type: "button"} Вперёд!
+  -else
+    %h1
+      Привет!
+    %p
+      Храни интересные вещи в одном месте!
+    =link_to "Войди", new_user_session_path, {class: 'btn btn-primary btn-large'}
+    или
+    =link_to "Зарегистрируйся", new_user_registration_path, {class: 'btn btn-primary btn-large'}
