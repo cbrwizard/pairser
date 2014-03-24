@@ -1,25 +1,16 @@
-<%= form_for(@image) do |f| %>
-  <% if @image.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@image.errors.count, "error") %> prohibited this image from being saved:</h2>
-
-      <ul>
-      <% @image.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= form_for @image, :html => { :class => 'form-horizontal form-model' } do |f| %>
+  <div class="form-group">
+    <%= f.label :website, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :website, :class => 'text-field form-control' %>
     </div>
-  <% end %>
+  </div>
 
-  <div class="field">
-    <%= f.label :website %><br>
-    <%= f.text_field :website %>
-  </div>
-  <div class="field">
-    <%= f.label :good_id %><br>
-    <%= f.text_field :good_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <div class='col-md-offset-2 col-md-10'>
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  images_path, :class => 'btn btn-default' %>
+    </div>
   </div>
 <% end %>

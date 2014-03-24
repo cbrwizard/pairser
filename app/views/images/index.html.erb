@@ -1,29 +1,36 @@
-<h1>Listing images</h1>
-
-<table>
+<%- model_class = Image -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => Image %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Website</th>
-      <th>Good</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>ID</th>
+      <th><%= model_class.human_attribute_name(:website) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @images.each do |image| %>
       <tr>
+        <td><%= image.id %></td>
         <td><%= image.website %></td>
-        <td><%= image.good %></td>
-        <td><%= link_to 'Show', image %></td>
-        <td><%= link_to 'Edit', edit_image_path(image) %></td>
-        <td><%= link_to 'Destroy', image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=l image.created_at, format: :long %></td>
+        <td>
+          <%= link_to image_path(image), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do %>
+            <%= glyph 'info-sign' %>
+            <%= glyph 'pencil' %>
+          <%- end -%>
+          <%= link_to image_path(image), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do %>
+            <%= glyph 'remove' %>
+          <%- end -%>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Image', new_image_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_image_path,
+            :class => 'btn btn-primary' %>
