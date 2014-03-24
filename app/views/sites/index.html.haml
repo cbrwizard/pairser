@@ -1,0 +1,33 @@
+- model_class = Site
+.page-header
+  %h1= t '.title', :default => Site
+%table.table.table-striped
+  %thead
+    %tr
+      %th ID
+      %th= model_class.human_attribute_name(:domain)
+      %th= model_class.human_attribute_name(:name_selector)
+      %th= model_class.human_attribute_name(:main_image_selector)
+      %th= model_class.human_attribute_name(:images_selector)
+      %th= model_class.human_attribute_name(:button_selector)
+      %th= model_class.human_attribute_name(:created_at)
+      %th= t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @sites.each do |site|
+      %tr
+        %td= site.id
+        %td= site.domain
+        %td= site.name_selector
+        %td= site.main_image_selector
+        %td= site.images_selector
+        %td= site.button_selector
+        %td= l site.created_at, format: :long
+        %td
+          = link_to site_path(site), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do
+            = glyph 'info-sign'
+            = glyph 'pencil'
+          = link_to site_path(site), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do
+            = glyph 'remove'
+= link_to t('.new', :default => t("helpers.links.new")), |
+  new_site_path,                                         |
+  :class => 'btn btn-primary'                            |

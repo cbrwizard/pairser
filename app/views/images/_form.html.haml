@@ -1,0 +1,10 @@
+= form_for @image, :html => { :class => 'form-horizontal form-model' } do |f|
+  .form-group
+    = f.label :website, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :website, :class => 'text-field form-control'
+  .form-group
+    .col-md-offset-2.col-md-10
+      = f.submit nil, :class => 'btn btn-primary'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+        images_path, :class => 'btn btn-default'                     |

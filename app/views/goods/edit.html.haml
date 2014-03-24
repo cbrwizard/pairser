@@ -1,0 +1,4 @@
+- model_class = Good
+.page-header
+  %h1= t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => Good
+= render :partial => 'form'

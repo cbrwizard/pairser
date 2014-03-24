@@ -1,0 +1,26 @@
+= form_for @site, :html => { :class => 'form-horizontal form-model' } do |f|
+  .form-group
+    = f.label :domain, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :domain, :class => 'text-field form-control'
+  .form-group
+    = f.label :name_selector, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :name_selector, :class => 'text-field form-control'
+  .form-group
+    = f.label :main_image_selector, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :main_image_selector, :class => 'text-field form-control'
+  .form-group
+    = f.label :images_selector, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :images_selector, :class => 'text-field form-control'
+  .form-group
+    = f.label :button_selector, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.text_field :button_selector, :class => 'text-field form-control'
+  .form-group
+    .col-md-offset-2.col-md-10
+      = f.submit nil, :class => 'btn btn-primary'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+        sites_path, :class => 'btn btn-default'                      |

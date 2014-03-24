@@ -1,0 +1,22 @@
+.page-header
+  %h1= t ".title", default: "Login"
+= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-horizontal form-user"}) do |f|
+  .form-group
+    = f.label :email, class: "control-label col-md-4"
+    .col-md-8
+      = f.email_field :email, class: "text-field form-control", html: {spellcheck: "false"}
+  .form-group
+    = f.label :password, class: "control-label col-md-4"
+    .col-md-8
+      = f.password_field :password, class: "text-field form-control", html: {autocomplete: "off"}
+  - if devise_mapping.rememberable?
+    .form-group
+      = f.label :remember_me, "Remember Me", class: "control-label col-md-4"
+      .col-md-8
+        = f.check_box :remember_me
+  .form-group
+    .col-md-offset-4.col-md-8
+      = f.submit "Login", class: "btn btn-primary"
+  .form-group
+    .col-md-offset-4.col-md-8
+      = render "devise/shared/links"
