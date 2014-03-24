@@ -63,7 +63,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem "mocha"
   gem 'capybara'
-  gem 'selenium-webdriver'
 end
 
 # Пагинация
@@ -73,3 +72,8 @@ gem 'devise', github: 'plataformatec/devise'
 
 # Валидация имейлов, ссылок и тд
 gem 'validates_formatting_of'
+
+# Парсинг сайтов через браузер
+gem "watir-rails"
+# sudo apt-get install phantomjs
+# для тестирования без gui

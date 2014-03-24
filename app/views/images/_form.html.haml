@@ -4,6 +4,10 @@
     .col-md-10
       = f.text_field :website, :class => 'text-field form-control'
   .form-group
+    = f.label :good_id, :class => 'control-label col-md-2'
+    .col-md-10
+      = f.number_field :good_id, :class => 'text-field form-control'
+  .form-group
     .col-md-offset-2.col-md-10
       = f.submit nil, :class => 'btn btn-primary'
       = link_to t('.cancel', :default => t("helpers.links.cancel")), |

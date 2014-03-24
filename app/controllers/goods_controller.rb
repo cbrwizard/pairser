@@ -1,13 +1,14 @@
 class GoodsController < ApplicationController
 
-  before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy]
+  before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy, :my]
   layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
 
   before_action :set_good, only: [:show, :edit, :update, :destroy]
 
-
+  # List of user' goods
   def my
 
+    @my_goods = current_user.goods
   end
 
   # GET /goods
@@ -78,6 +79,6 @@ class GoodsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def good_params
-      params.require(:good).permit(:name, :main_image_id)
+      params.require(:good).permit(:name, :main_image_id, :user_id)
     end
 end

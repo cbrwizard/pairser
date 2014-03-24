@@ -7,7 +7,11 @@ Pairser::Application.routes.draw do
 
   resources :images
 
-  resources :sites
+  resources :sites do
+    collection do
+      post 'parse'
+    end
+  end
 
   resources :parse_requests
 

@@ -1,27 +1,26 @@
-- model_class = Good
 .page-header
-  %h1= t '.title', :default => Good
+  %h1 Товар
 %table.table.table-striped
   %thead
     %tr
       %th ID
-      %th= model_class.human_attribute_name(:name)
-      %th= model_class.human_attribute_name(:main_image_id)
-      %th= model_class.human_attribute_name(:created_at)
-      %th= t '.actions', :default => t("helpers.actions")
+      %th name
+      %th main_image_id
+      %th User_id
+      %th created_at
+      %th действия
   %tbody
     - @goods.each do |good|
       %tr
         %td= good.id
         %td= good.name
         %td= good.main_image_id
+        %td= good.user_id
         %td= l good.created_at, format: :long
         %td
-          = link_to good_path(good), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do
-            = glyph 'info-sign'
-            = glyph 'pencil'
-          = link_to good_path(good), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do
-            = glyph 'remove'
+          =link_to "редактировать", edit_good_path(good.id)
+        %td
+          =link_to "удалить", good, :data => {confirm: 'Точно удалить? Восстановить никак'}, method: :delete
 = link_to t('.new', :default => t("helpers.links.new")), |
   new_good_path,                                         |
   :class => 'btn btn-primary'                            |

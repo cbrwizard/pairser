@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324151749) do
+ActiveRecord::Schema.define(version: 20140324175218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20140324151749) do
 
   create_table "parse_requests", force: true do |t|
     t.string   "domain"
-    t.integer  "count"
+    t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

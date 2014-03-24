@@ -1,2 +1,8 @@
 .page-header
   %h1 Мои вещи
+
+.container
+  -if @my_goods.blank?
+    =link_to "Добавь", root_path
+    вещи в свой список, чтобы смотреть их здесь.
+  =render @my_goods

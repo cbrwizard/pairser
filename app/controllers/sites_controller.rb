@@ -1,6 +1,37 @@
 class SitesController < ApplicationController
+  include Links
+
   before_action :set_site, only: [:show, :edit, :update, :destroy]
   layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
+
+  # Parses a link and grabs all goods' info
+  # @todo create check for nil
+  # @todo create redirect with notice
+  def parse
+
+    #
+    website = params[:website]
+    website_domain = get_host_without_www(website)
+    site = Site.find_by_domain(website_domain)
+    if site.present?
+      #
+      browser = Watir::Browser.new :phantomjs
+      browser.goto website
+      main_image_path = browser.element(css: ".product .image img").attribute_value('src')
+      title = browser.element(css: ".info.box h2").text
+
+      #
+      main_image = Image.create(website: main_image_path)
+      good = current_user.goods.create(name: title, main_image_id: main_image.id)
+      main_image.good_id = good.id
+      main_image.save
+    else
+      #
+      parse_request = ParseRequest.find_by_domain(website_domain)
+      parse_request.present? ? parse_request.count += 1 : ParseRequest.create(domain: website_domain)
+    end
+
+  end
 
   # GET /sites
   # GET /sites.json
