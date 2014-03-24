@@ -1,4 +1,5 @@
 Pairser::Application.routes.draw do
+  get "pages/index"
   resources :goods
 
   resources :images
