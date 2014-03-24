@@ -1,4 +1,6 @@
 Pairser::Application.routes.draw do
+  resources :images
+
   resources :sites
 
   resources :parse_requests
