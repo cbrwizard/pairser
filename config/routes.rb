@@ -1,4 +1,6 @@
 Pairser::Application.routes.draw do
+  resources :sites
+
   resources :parse_requests
 
   devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", passwords: "users/passwords"}, skip: [:sessions, :registrations]

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Domain:</strong>
+  <%= @site.domain %>
+</p>
+
+<p>
+  <strong>Name selector:</strong>
+  <%= @site.name_selector %>
+</p>
+
+<p>
+  <strong>Main image selector:</strong>
+  <%= @site.main_image_selector %>
+</p>
+
+<p>
+  <strong>Images selector:</strong>
+  <%= @site.images_selector %>
+</p>
+
+<p>
+  <strong>Button selector:</strong>
+  <%= @site.button_selector %>
+</p>
+
+<%= link_to 'Edit', edit_site_path(@site) %> |
+<%= link_to 'Back', sites_path %>
