@@ -8,6 +8,8 @@ class SitesController < ApplicationController
   # @todo create check for nil
   # @todo create redirect with notice
   # @todo create check for invalid image
+  # @todo create check for existing good by website
+  # @todo create check if correct domain but can't find anything = wrong link
   def parse
 
     #
@@ -37,7 +39,7 @@ class SitesController < ApplicationController
             begin
               button.click
               ad_image_path = browser.element(css: site.main_image_selector).attribute_value('src')
-              Image.create(website: ad_image_path, good_id: good.id)
+              Image.where(website: ad_image_path, good_id: good.id).first_or_create
             rescue
               "skipping image"
             end
@@ -52,7 +54,7 @@ class SitesController < ApplicationController
               button.click
               browser.wait_until{main_image_path != browser.element(css: site.main_image_selector).attribute_value('src')}
               ad_image_path = browser.element(css: site.main_image_selector).attribute_value('src')
-              Image.create(website: ad_image_path, good_id: good.id)
+              Image.where(website: ad_image_path, good_id: good.id).first_or_create
             rescue
               "skipping image"
             end
@@ -63,10 +65,13 @@ class SitesController < ApplicationController
       if good.persisted?
         redirect_to my_goods_path
       end
+      # If no instructions on how to parse website found, increate count on requests
     else
-      #
-      parse_request = ParseRequest.find_by_domain(website_domain)
-      parse_request.present? ? parse_request.count += 1 : ParseRequest.create(domain: website_domain)
+      parse_request = ParseRequest.where(domain: website_domain).first_or_create
+      parse_request.count += 1
+      parse_request.save
+
+      redirect_to my_goods_path, notice: "Мы пока не можем сохранить информацию с этого сайта. Но это вопрос времени!"
     end
 
   end
