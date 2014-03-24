@@ -1,4 +1,6 @@
 Pairser::Application.routes.draw do
+  resources :goods
+
   resources :images
 
   resources :sites
