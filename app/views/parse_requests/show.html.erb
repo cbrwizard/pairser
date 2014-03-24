@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Domain:</strong>
+  <%= @parse_request.domain %>
+</p>
+
+<p>
+  <strong>Count:</strong>
+  <%= @parse_request.count %>
+</p>
+
+<%= link_to 'Edit', edit_parse_request_path(@parse_request) %> |
+<%= link_to 'Back', parse_requests_path %>

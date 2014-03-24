@@ -1,0 +1,29 @@
+<h1>Listing parse_requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>Count</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @parse_requests.each do |parse_request| %>
+      <tr>
+        <td><%= parse_request.domain %></td>
+        <td><%= parse_request.count %></td>
+        <td><%= link_to 'Show', parse_request %></td>
+        <td><%= link_to 'Edit', edit_parse_request_path(parse_request) %></td>
+        <td><%= link_to 'Destroy', parse_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Parse request', new_parse_request_path %>
