@@ -1,3 +1,18 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$ ->
+  goods.init()
+
+  $(".good_block").click ->
+    window.location = $(this).attr("data-link")
+
+
+goods =
+  init: ->
+    setTimeout(->
+      goods.masonry_on()
+    ,400)
+
+  masonry_on: ->
+    $("#my_goods").masonry({
+      columnWidth: '.good_block',
+      itemSelector: '.good_block'
+    })
