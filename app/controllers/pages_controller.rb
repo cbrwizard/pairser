@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  layout "admin", only: [:admin]
+
   def index
   end
 

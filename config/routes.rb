@@ -1,5 +1,9 @@
 Pairser::Application.routes.draw do
-  resources :goods
+  resources :goods do
+    collection do
+      get 'my'
+    end
+  end
 
   resources :images
 

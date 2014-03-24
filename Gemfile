@@ -70,3 +70,6 @@ end
 gem 'will_paginate'
 
 gem 'devise', github: 'plataformatec/devise'
+
+# Валидация имейлов, ссылок и тд
+gem 'validates_formatting_of'

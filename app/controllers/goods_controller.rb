@@ -1,8 +1,14 @@
 class GoodsController < ApplicationController
 
   before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy]
+  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
 
   before_action :set_good, only: [:show, :edit, :update, :destroy]
+
+
+  def my
+
+  end
 
   # GET /goods
   # GET /goods.json

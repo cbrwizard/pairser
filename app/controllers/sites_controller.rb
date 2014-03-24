@@ -1,5 +1,6 @@
 class SitesController < ApplicationController
   before_action :set_site, only: [:show, :edit, :update, :destroy]
+  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
 
   # GET /sites
   # GET /sites.json
