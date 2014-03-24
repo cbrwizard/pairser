@@ -1,5 +1,6 @@
-<h1>New parse_request</h1>
+<%- model_class = ParseRequest -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => ParseRequest %></h1>
+</div>
+<%= render :partial => 'form' %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', parse_requests_path %>

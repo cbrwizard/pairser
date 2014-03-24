@@ -1,25 +1,22 @@
-<%= form_for(@parse_request) do |f| %>
-  <% if @parse_request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@parse_request.errors.count, "error") %> prohibited this parse_request from being saved:</h2>
-
-      <ul>
-      <% @parse_request.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= form_for @parse_request, :html => { :class => 'form-horizontal form-model' } do |f| %>
+  <div class="form-group">
+    <%= f.label :domain, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :domain, :class => 'text-field form-control' %>
     </div>
-  <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.label :count, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.number_field :count, :class => 'text-field form-control' %>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= f.label :domain %><br>
-    <%= f.text_field :domain %>
-  </div>
-  <div class="field">
-    <%= f.label :count %><br>
-    <%= f.number_field :count %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <div class='col-md-offset-2 col-md-10'>
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  parse_requests_path, :class => 'btn btn-default' %>
+    </div>
   </div>
 <% end %>
