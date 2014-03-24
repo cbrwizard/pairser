@@ -1,37 +1,40 @@
-<%= form_for(@site) do |f| %>
-  <% if @site.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@site.errors.count, "error") %> prohibited this site from being saved:</h2>
-
-      <ul>
-      <% @site.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= form_for @site, :html => { :class => 'form-horizontal form-model' } do |f| %>
+  <div class="form-group">
+    <%= f.label :domain, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :domain, :class => 'text-field form-control' %>
     </div>
-  <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.label :name_selector, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :name_selector, :class => 'text-field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :main_image_selector, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :main_image_selector, :class => 'text-field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :images_selector, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :images_selector, :class => 'text-field form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :button_selector, :class => 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :button_selector, :class => 'text-field form-control' %>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= f.label :domain %><br>
-    <%= f.text_field :domain %>
-  </div>
-  <div class="field">
-    <%= f.label :name_selector %><br>
-    <%= f.text_field :name_selector %>
-  </div>
-  <div class="field">
-    <%= f.label :main_image_selector %><br>
-    <%= f.text_field :main_image_selector %>
-  </div>
-  <div class="field">
-    <%= f.label :images_selector %><br>
-    <%= f.text_field :images_selector %>
-  </div>
-  <div class="field">
-    <%= f.label :button_selector %><br>
-    <%= f.text_field :button_selector %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-group">
+    <div class='col-md-offset-2 col-md-10'>
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  sites_path, :class => 'btn btn-default' %>
+    </div>
   </div>
 <% end %>
