@@ -21,3 +21,17 @@
     }
   }
 }
+
+#good_view{
+  .item{
+    padding-bottom: 75px;
+    img{
+      margin: 0 auto;
+      max-height: 1000px;
+    }
+  }
+}
+
+.carousel-inner{
+  background: #333;
+}
