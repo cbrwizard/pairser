@@ -77,3 +77,6 @@ gem 'validates_formatting_of'
 gem "watir-rails"
 # sudo apt-get install phantomjs
 # для тестирования без gui
+
+# Получает размер изображений
+gem 'fastimage'
