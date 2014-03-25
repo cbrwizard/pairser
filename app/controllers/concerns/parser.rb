@@ -34,31 +34,26 @@ module Parser
   def create_good_essential(browser, site_instruction)
     title = browser.element(css: site_instruction.name_selector).text
 
-    main_image_path = browser.image(css: site_instruction.main_image_selector).attribute_value('src')
-    if main_image_path.width > 99 && main_image_path.height > 99
-      main_image = Image.where(website: main_image_path).first_or_create
+    main_image_object = browser.image(css: site_instruction.main_image_selector)
+    main_image_path = main_image_object.attribute_value('src')
+    main_image = Image.where(website: main_image_path).first_or_create
 
-      good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
+    good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
 
-      main_image.good_id = good.id
-      main_image.save
-      good
-    else
-      false
-    end
+    main_image.good_id = good.id
+    main_image.save
+    good
   end
 
 
   # Gets other images
   # @note if there are instructions that there are aditional images on url
   def parse_other_images(browser, site_instruction, good)
-    images = browser.elements(css: site_instruction.images_selector)
+    images = browser.images(css: site_instruction.images_selector)
     images.each do |image|
       begin
-        if image.width > 99 && image.height > 99
-          ad_image_path = image.attribute_value('src')
-          Image.where(website: ad_image_path, good_id: good.id).first_or_create
-        end
+        ad_image_path = image.attribute_value('src')
+        Image.where(website: ad_image_path, good_id: good.id).first_or_create
       rescue
         "skipping image"
       end
@@ -71,16 +66,15 @@ module Parser
   # @note clicks on thumbnails and gets big versions of them from main image selector
   def parse_thumbnail_images(browser, site_instruction, good)
     buttons = browser.elements(css: site_instruction.button_selector)
-    main_image_path = browser.element(css: site_instruction.main_image_selector).attribute_value('src')
+    main_image_object = browser.image(css: site_instruction.main_image_selector)
+    main_image_path = main_image_object.attribute_value('src')
     buttons.each do |button|
       if button.visible?
         begin
           button.click
           browser.wait_until{main_image_path != browser.element(css: site_instruction.main_image_selector).attribute_value('src')}
-          if main_image_path.width > 99 && main_image_path.height > 99
-            ad_image_path = browser.element(css: site_instruction.main_image_selector).attribute_value('src')
-            Image.where(website: ad_image_path, good_id: good.id).first_or_create
-          end
+          ad_image_path = browser.element(css: site_instruction.main_image_selector).attribute_value('src')
+          Image.where(website: ad_image_path, good_id: good.id).first_or_create
         rescue
           "skipping image"
         end

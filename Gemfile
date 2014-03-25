@@ -11,7 +11,6 @@ gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.0'
 gem 'compass-rails'
 gem 'bootstrap-sass'
-gem 'bootstrap-sass-extras'
 gem 'haml'
 
 # Use Uglifier as compressor for JavaScript assets
@@ -63,6 +62,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem "mocha"
   gem 'capybara'
+  gem 'selenium-webdriver'
 end
 
 # Пагинация
