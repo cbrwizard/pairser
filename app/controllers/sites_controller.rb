@@ -9,11 +9,6 @@ class SitesController < ApplicationController
 
   # Parses a link and grabs all goods' info
   # @note POST /sites/parse
-  # @todo create check for nil
-  # @todo create redirect with notice
-  # @todo create check for invalid image size
-  # @todo create check for existing good by website
-  # @todo create check if correct domain but can't find anything = wrong link
   def parse
     website = params[:url]
     website_domain = get_host_without_www(website)

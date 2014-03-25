@@ -20,3 +20,5 @@ goods =
   carousel_on: ->
     $(".item:first-child, .carousel-indicators li:first-child").addClass('active')
     $(".carousel").carousel()
+    if $(".carousel-inner .item").length > 1
+      $('.carousel-control, .carousel-indicators').removeClass('hidden')
