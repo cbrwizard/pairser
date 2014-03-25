@@ -53,7 +53,7 @@ module Parser
     images.each do |image|
       begin
         ad_image_path = image.attribute_value('src')
-        Image.where(website: ad_image_path, good_id: good.id).first_or_create if _is_ok_size?(ad_image_path)
+        Image.where(website: ad_image_path, good_id: good.id).first_or_create if is_ok_size?(ad_image_path)
       rescue
         "skipping image"
       end
@@ -74,7 +74,7 @@ module Parser
           button.click
           browser.wait_until{main_image_path != browser.element(css: site_instruction.main_image_selector).attribute_value('src')}
           ad_image_path = browser.element(css: site_instruction.main_image_selector).attribute_value('src')
-          Image.where(website: ad_image_path, good_id: good.id).first_or_create if _is_ok_size?(ad_image_path)
+          Image.where(website: ad_image_path, good_id: good.id).first_or_create if is_ok_size?(ad_image_path)
         rescue
           "skipping image"
         end
@@ -86,7 +86,7 @@ module Parser
   # Checks size
   # @param [String] url to image
   # @return [Boolean]
-  def _is_ok_size?(image_path)
+  def is_ok_size?(image_path)
     FastImage.size(image_path)[0] > 99 && FastImage.size(image_path)[1] > 99
   end
 

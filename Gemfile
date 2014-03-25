@@ -60,9 +60,8 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem "mocha"
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem "watir-rspec"
 end
 
 # Пагинация

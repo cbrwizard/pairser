@@ -25,7 +25,7 @@ class SitesController < ApplicationController
           redirect_to view_good_path(good.id), notice: 'Вещь добавлена!'
         end
       # If there was an error during parsing
-      rescue Watir::Exception, Selenium::WebDriver::Error::InvalidElementStateError
+      rescue Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::InvalidElementStateError
         form_site_error(website_domain)
         redirect_to root_path, alert: "Ошибка. Проверьте правильность ссылки или попробуйте позже. Администраторы уже работают над устранением ошибки!"
       end

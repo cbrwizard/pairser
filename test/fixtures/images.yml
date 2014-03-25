@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  website: MyString
-  good_id: 
-
-two:
-  website: MyString
-  good_id: 

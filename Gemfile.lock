@@ -99,12 +99,9 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    metaclass (0.0.4)
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    mocha (1.0.0)
-      metaclass (~> 0.0.1)
     multi_json (1.9.2)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
@@ -130,6 +127,10 @@ GEM
     rdoc (4.1.1)
       json (~> 1.4)
     ref (1.0.5)
+    rspec (2.14.1)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
     rspec-core (2.14.8)
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -194,6 +195,9 @@ GEM
       rack
       rails
       watir (~> 5.0)
+    watir-rspec (1.1.2)
+      rspec (~> 2.0)
+      watir (~> 5.0)
     watir-webdriver (0.6.8)
       selenium-webdriver (>= 2.18.0)
     websocket (1.0.7)
@@ -218,15 +222,14 @@ DEPENDENCIES
   haml
   jbuilder (~> 1.2)
   jquery-rails
-  mocha
   rails (= 4.0.2)
   rspec-rails
   sass-rails (~> 4.0.0)
   sdoc
-  selenium-webdriver
   sqlite3
   therubyracer
   uglifier (>= 1.3.0)
   validates_formatting_of
   watir-rails
+  watir-rspec
   will_paginate
