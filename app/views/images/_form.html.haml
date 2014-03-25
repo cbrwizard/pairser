@@ -1,4 +1,11 @@
 = form_for @image, :html => { :class => 'form-horizontal form-model' } do |f|
+  - if @image.errors.any?
+    #error_explanation.alert.alert-danger
+      %h2
+        = @image.errors.count
+      %ul
+        - @image.errors.full_messages.each do |msg|
+          %li= msg
   .form-group
     = f.label :website, :class => 'control-label col-md-2'
     .col-md-10

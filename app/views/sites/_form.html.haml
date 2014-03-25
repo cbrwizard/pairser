@@ -1,4 +1,11 @@
 = form_for @site, :html => { :class => 'form-horizontal' } do |f|
+  - if @site.errors.any?
+    #error_explanation.alert.alert-danger
+      %h2
+        = @site.errors.count
+      %ul
+        - @site.errors.full_messages.each do |msg|
+          %li= msg
   .form-group.col-md-10
     = f.label 'Домен сайта без www'
     = f.text_field :domain, :class => 'text-field form-control', placeholder: 'net-a-porter.com'

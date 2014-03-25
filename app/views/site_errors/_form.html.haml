@@ -1,4 +1,11 @@
 = form_for @site_error, :html => { :class => 'form-horizontal form-model' } do |f|
+  - if @site_error.errors.any?
+    #error_explanation.alert.alert-danger
+      %h2
+        = @site_error.errors.count
+      %ul
+        - @site_error.errors.full_messages.each do |msg|
+          %li= msg
   .form-group
     = f.label :domain, :class => 'control-label col-md-2'
     .col-md-10
