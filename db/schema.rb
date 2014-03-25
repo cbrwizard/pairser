@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324175218) do
+ActiveRecord::Schema.define(version: 20140325102342) do
 
   create_table "goods", force: true do |t|
     t.string   "name"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 20140324175218) do
   create_table "parse_requests", force: true do |t|
     t.string   "domain"
     t.integer  "count",      default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "site_errors", force: true do |t|
+    t.string   "domain"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

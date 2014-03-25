@@ -1,4 +1,6 @@
 Pairser::Application.routes.draw do
+  resources :site_errors
+
   resources :goods do
     member do
       get 'view'

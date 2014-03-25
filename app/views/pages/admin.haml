@@ -7,8 +7,18 @@
   %p.lead
     или #{link_to 'посмотреть', parse_requests_path} статистику запросов к тем сайтам, к которым инструкция еще не была добавлена
   %p.lead
+    или #{link_to 'посмотреть', site_errors_path} статистику ошибок парсинга сайтов
+  %p.lead
     или просто просмотреть и отредактировать базы.
 
+  .panel.panel-info
+    .panel-heading
+      Количество запросов на новые сайты
+    .panel-body
+      =@parse_requests_count
 
-
-
+  .panel.panel-danger
+    .panel-heading
+      Количество ошибок запросов
+    .panel-body
+      =@site_errors_count
