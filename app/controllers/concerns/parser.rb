@@ -1,6 +1,7 @@
 # Parser module
 # @todo do it in Threads with ajax images uploading
 module Parser
+  include Links
   extend ActiveSupport::Concern
 
   # Does the parsing
@@ -32,12 +33,13 @@ module Parser
   # @param browser [Watir::Browser] browser which checks everything
   # @return [Good] resulting good
   def parse_without_instructions(browser)
-
+    browser.goto 'http://www.incity.ru/catalog/oz_13/vo_iskusstvennaya_koja/395948.html'
     # Finds all images with size > 99px
     all_big_images = []
     browser.images.each do |image|
       src = image.src
-      all_big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      all_big_images << [FastImage.size(src).inject(:+), src] if image.visible? && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      break if all_big_images.length >= 30 # in case of huge number of images
     end
     largest_image = all_big_images.max
 
@@ -45,46 +47,81 @@ module Parser
     main_image_src = largest_image[1]
     main_image_element = browser.image(src: main_image_src)
 
+    # def check_image
     # Checks if src is broken
     unless main_image_element.exists?
+      #TODO: remove domain and try to find. if none - remove http://
+      #main_image_src = main_image_src - get_host_without_www(main_image_src)
       # Removes 'http:' from start of src
-      main_image_element = browser.image(src: main_image_src.slice(5..-1))
+      unless main_image_element.exists?
+        main_image_element = browser.image(src: main_image_src.slice(5..-1))
+      end
     end
 
     # If main image dom element was found after all
     if main_image_element.exists?
+
       # Tries to find a common parent of image and headings
       tmp_parent = main_image_element.parent
       good_container = false
-      for i in 0 .. 5
-        if tmp_parent.h1.exists? || tmp_parent.h2.exists?
+      for i in 0..10
+        itemprop_name = tmp_parent.element(css: "[itemprop='name']")
+        if itemprop_name.exists?
+          text = itemprop_name.text
           good_container = tmp_parent
           break
+        else
+          h1 = tmp_parent.h1
+          if h1.exists?
+            text = h1.text
+            good_container = tmp_parent
+            break
+          else
+            h2 = tmp_parent.h2
+            if h2.exists?
+              text = h2.text
+              good_container = tmp_parent
+              break
+            else
+              h3 = tmp_parent.h3
+              if h3.exists?
+                text = h3.text
+                good_container = tmp_parent
+                break
+              end
+            end
+          end
         end
         tmp_parent = tmp_parent.parent
       end
-
-      # Successfully found a goods container
-      if good_container
-        h1 = good_container.h1
-        if h1.exists?
-          text = h1.text
-        else
-          h2 = good_container.h2
-          text = h2.text
-        end
-
-        # Looks for other images in that container
-        big_images = []
-        good_container.images.each do |image|
-          src = image.src
-          big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
-        end
-      else
-        text = browser.title
-      end
     end
-    good
+
+    # Successfully found a goods container
+    if good_container
+      # Looks for other images in that container
+
+      big_images = []
+      all_big_images.each do |image|
+        src = image[1]
+        image_element = good_container.image(src: src)
+
+        # Checks if src is broken
+        unless image_element.exists?
+
+          # Removes 'http:' from start of src
+          unless image_element.exists?
+            image_element = browser.image(src: image[1].slice(5..-1))
+          end
+        end
+        big_images << image if src != main_image_src && image_element.exists?
+      end
+    else
+      text = browser.title
+    end
+    main_image_src
+    text
+    big_images
+
   end
 
 
