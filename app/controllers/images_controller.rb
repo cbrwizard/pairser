@@ -1,6 +1,9 @@
 class ImagesController < ApplicationController
+  include Access
+  before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :index, :show]
+  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index, :show]
+
   before_action :set_image, only: [:show, :edit, :update, :destroy]
-  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
 
   # GET /images
   # GET /images.json

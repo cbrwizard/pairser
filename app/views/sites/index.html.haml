@@ -23,6 +23,6 @@
           =link_to "редактировать", edit_site_path(site.id)
         %td
           =link_to "удалить", site, :data => {confirm: 'Точно удалить? Восстановить никак'}, method: :delete
-= link_to t('.new', :default => t("helpers.links.new")), |
+= link_to 'Новый', |
   new_site_path,                                         |
   :class => 'btn btn-primary'                            |

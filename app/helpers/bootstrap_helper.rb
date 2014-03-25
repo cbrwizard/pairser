@@ -1,7 +1,7 @@
-# Handles bootstrap to rails integration
+# Handles bootstrap-to-rails integration
 module BootstrapHelper
 
-  # Shows bootstrap error from flash
+  # Renders bootstrap error from flash
   # @param flash_type [Flash]
   # @return [String] CSS class of alert
   def alert_class_for flash_type

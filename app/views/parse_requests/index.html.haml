@@ -1,27 +1,24 @@
-- model_class = ParseRequest
 .page-header
-  %h1= t '.title', :default => ParseRequest
+  %h1= "Запросы на добавлени сайтов"
 %table.table.table-striped
   %thead
     %tr
       %th ID
-      %th= model_class.human_attribute_name(:domain)
-      %th= model_class.human_attribute_name(:count)
-      %th= model_class.human_attribute_name(:created_at)
-      %th= t '.actions', :default => t("helpers.actions")
+      %th domain
+      %th count
+      %th updated_at
+      %th действия
   %tbody
     - @parse_requests.each do |parse_request|
       %tr
         %td= parse_request.id
         %td= parse_request.domain
         %td= parse_request.count
-        %td= l parse_request.created_at, format: :long
+        %td= l parse_request.updated_at, format: :long
         %td
-          = link_to parse_request_path(parse_request), :class => 'btn btn-xs', :title => "#{ t('.show', :default => t('helpers.links.show')) }" do
-            = glyph 'info-sign'
-            = glyph 'pencil'
-          = link_to parse_request_path(parse_request), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs', :title => "#{ t('.destroy', :default => t('helpers.links.destroy')) }" do
-            = glyph 'remove'
-= link_to t('.new', :default => t("helpers.links.new")), |
+          =link_to "редактировать", edit_parse_request_path(parse_request.id)
+        %td
+          =link_to "удалить", parse_request, :data => {confirm: 'Точно удалить? Восстановить никак'}, method: :delete
+= link_to 'Новый', |
   new_parse_request_path,                                |
   :class => 'btn btn-primary'                            |

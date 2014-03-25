@@ -1,6 +1,9 @@
 class ParseRequestsController < ApplicationController
+  include Access
+  before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :index, :show]
+  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index, :index, :show]
+
   before_action :set_parse_request, only: [:show, :edit, :update, :destroy]
-  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
 
   # GET /parse_requests
   # GET /parse_requests.json

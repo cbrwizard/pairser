@@ -18,7 +18,6 @@ Pairser::Application.routes.draw do
 
   resources :parse_requests
 
-  devise_for :users, controllers: {registrations: "users/registrations", sessions: "users/sessions", passwords: "users/passwords"}, skip: [:sessions, :registrations]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -75,6 +74,8 @@ Pairser::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  devise_for :users, skip: [:sessions, :registrations]
 
   devise_scope :user do
     get    "login"   => "devise/sessions#new",         as: :new_user_session

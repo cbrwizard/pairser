@@ -1,9 +1,9 @@
 class GoodsController < ApplicationController
-  include GoodsModule
+  include Access
+  before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :show, :index]
+  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index, :show]
 
-  before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy, :my]
-  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
-
+  before_action :require_user_signed_in, only: [:my]
   before_action :set_good, only: [:show, :edit, :update, :destroy, :view]
 
   # List of user' goods

@@ -12,8 +12,10 @@
   -else
     %h1
       Привет!
+      %small
+        Pairser и ты - отличная пара!
     %p
-      Храни интересные вещи в одном месте!
-    =link_to "Войди", new_user_session_path, {class: 'btn btn-primary btn-large'}
-    или
-    =link_to "Зарегистрируйся", new_user_registration_path, {class: 'btn btn-primary btn-large'}
+      Храни интересные вещи в одном месте
+    .btn-group
+      =link_to "Войди", new_user_session_path, {class: 'btn btn-primary btn-large'}
+      =link_to "Зарегистрируйся", new_user_registration_path, {class: 'btn btn-primary btn-large'}

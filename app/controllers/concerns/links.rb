@@ -2,7 +2,7 @@
 module Links
   extend ActiveSupport::Concern
 
-  # Parses domain without www
+  # Parses website domain without www
   # @param url [String] domain
   # @example
   #   website_domain = get_host_without_www('http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html')
