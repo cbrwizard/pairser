@@ -1,24 +1,2 @@
-.page-header
-  %h1
-    Админка
-
-  %p.lead
-    Будучи админом, можно #{link_to 'добавить', new_site_url} инструкцию парсера к сайту
-  %p.lead
-    или #{link_to 'посмотреть', parse_requests_path} статистику запросов к тем сайтам, к которым инструкция еще не была добавлена
-  %p.lead
-    или #{link_to 'посмотреть', site_errors_path} статистику ошибок парсинга сайтов
-  %p.lead
-    или просто просмотреть и отредактировать базы.
-
-  .panel.panel-info
-    .panel-heading
-      Количество запросов на новые сайты
-    .panel-body
-      =link_to @parse_requests_count, parse_requests_path
-
-  .panel.panel-danger
-    .panel-heading
-      Количество ошибок запросов
-    .panel-body
-      =link_to @site_errors_count, site_errors_path
+=render 'pages/admin/info'
+=render 'pages/admin/counts'

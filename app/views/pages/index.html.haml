@@ -1,21 +1,5 @@
 .jumbotron
   -if user_signed_in?
-    %h1
-      Привет снова!
-    %p
-      Введи сюда ссылку на понравившуюся тебе вещь, чтобы сохранить её
-    =form_tag parse_sites_path, :method => :post, :class => 'form-horizontal', id: 'parse-form' do
-      .input-group
-        =text_field_tag :url, '', class: 'form-control', placeholder: 'www.google.com'
-        %span.input-group-btn
-          =submit_tag 'Вперёд!', class: 'btn btn-default', id: 'parse-btn'
+    =render 'pages/index/main_form'
   -else
-    %h1
-      Привет!
-      %small
-        Pairser и ты - отличная пара!
-    %p
-      Храни интересные вещи в одном месте
-    .btn-group
-      =link_to "Войди", new_user_session_path, {class: 'btn btn-primary btn-large'}
-      =link_to "Зарегистрируйся", new_user_registration_path, {class: 'btn btn-primary btn-large'}
+    =render 'pages/index/visitor'

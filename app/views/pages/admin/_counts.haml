@@ -1,0 +1,11 @@
+.panel.panel-info
+  .panel-heading
+    Количество запросов на новые сайты
+  .panel-body
+    =link_to @parse_requests_count, parse_requests_path
+
+.panel.panel-danger
+  .panel-heading
+    Количество ошибок запросов
+  .panel-body
+    =link_to @site_errors_count, site_errors_path

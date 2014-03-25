@@ -7,6 +7,7 @@ module Parser
   # @note is called from sites#parse
   # @param website [String] url of good
   # @param site_instruction [Site] site instruction of this website
+  # @return [Good] resulting good
   def parse_to_good(website, site_instruction)
     browser = prepare_browser(website)
     good = create_good_essential(browser, site_instruction)

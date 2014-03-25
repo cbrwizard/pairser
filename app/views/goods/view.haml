@@ -2,15 +2,4 @@
   %h1
     =@good.name
 
-  .carousel.slide
-    %ol.carousel-indicators.hidden
-      -@good.images.each_with_index do |image, i|
-        %li{"data-slide-to" => i, "data-target" => "#good_view .carousel"}
-    .carousel-inner
-      -@good_images.each do |image|
-        .item
-          =image_tag image.website
-    %a.left.carousel-control.hidden{"data-slide" => "prev", href: "#good_view .carousel"}
-      %span.glyphicon.glyphicon-chevron-left
-    %a.right.carousel-control.hidden{"data-slide" => "next", href: "#good_view .carousel"}
-      %span.glyphicon.glyphicon-chevron-right
+  =render partial: 'goods/view/carousel', locals: {good_images: @good_images}

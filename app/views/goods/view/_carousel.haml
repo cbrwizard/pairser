@@ -1,0 +1,12 @@
+.carousel.slide
+  %ol.carousel-indicators.hidden
+    -good_images.each_with_index do |image, i|
+      %li{"data-slide-to" => i, "data-target" => "#good_view .carousel"}
+  .carousel-inner
+    -good_images.each do |image|
+      .item
+        =image_tag image.website
+  %a.left.carousel-control.hidden{"data-slide" => "prev", href: "#good_view .carousel"}
+    %span.glyphicon.glyphicon-chevron-left
+  %a.right.carousel-control.hidden{"data-slide" => "next", href: "#good_view .carousel"}
+    %span.glyphicon.glyphicon-chevron-right
