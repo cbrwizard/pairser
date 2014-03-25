@@ -1,24 +1,18 @@
 = form_for @site, :html => { :class => 'form-horizontal' } do |f|
-  .form-group
-    = f.label 'Домен сайта без www', :class => 'control-label col-md-2'
-    .col-md-10
-      = f.text_field :domain, :class => 'text-field form-control', placeholder: 'net-a-porter.com'
-  .form-group
-    = f.label 'css селектор заголовка', :class => 'control-label col-md-2'
-    .col-md-10
-      = f.text_field :name_selector, :class => 'text-field form-control', placeholder: '#product-details h1'
-  .form-group
-    = f.label 'css селектор главного изображения', :class => 'control-label col-md-2'
-    .col-md-10
-      = f.text_field :main_image_selector, :class => 'text-field form-control', placeholder: '#medium-image'
-  .form-group
-    = f.label '(опционально) селектор остальных больших изображений', :class => 'control-label col-md-2'
-    .col-md-10
-      = f.text_field :images_selector, :class => 'text-field form-control', placeholder: '#slider_thumbs img'
-  .form-group
-    = f.label '(опционально) селектор кнопок/thumbnails, по которым нужно нажимать, чтобы на месте главного изображения появлялось еще одно об этом товаре', :class => 'control-label col-md-2'
-    .col-md-10
-      = f.text_field :button_selector, :class => 'text-field form-control', placeholder: '#thumbnails-container img'
-  .form-group
-    .col-md-offset-2.col-md-10
-      = f.submit 'Создать', :class => 'btn btn-primary'
+  .form-group.col-md-10
+    = f.label 'Домен сайта без www'
+    = f.text_field :domain, :class => 'text-field form-control', placeholder: 'net-a-porter.com'
+  .form-group.col-md-10
+    = f.label 'css селектор заголовка'
+    = f.text_field :name_selector, :class => 'text-field form-control', placeholder: '#product-details h1'
+  .form-group.col-md-10
+    = f.label 'css селектор главного изображения'
+    = f.text_field :main_image_selector, :class => 'text-field form-control', placeholder: '#medium-image'
+  .form-group.col-md-10
+    = f.label '(опционально) селектор остальных больших изображений'
+    = f.text_field :images_selector, :class => 'text-field form-control', placeholder: '#slider_thumbs img'
+  .form-group.col-md-10
+    = f.label '(опционально) селектор кнопок/thumbnails, по которым нужно нажимать, чтобы на месте главного изображения появлялось еще одно об этом товаре'
+    = f.text_field :button_selector, :class => 'text-field form-control', placeholder: '#thumbnails-container img'
+  .form-group.col-md-10
+    = f.submit 'Создать', :class => 'btn btn-primary'

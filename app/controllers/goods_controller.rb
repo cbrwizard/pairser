@@ -1,7 +1,6 @@
 class GoodsController < ApplicationController
   include Access
   before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :show, :index]
-  layout "admin", only: [:new, :edit, :create, :update, :destroy, :index, :show]
 
   before_action :require_user_signed_in, only: [:my]
   before_action :set_good, only: [:show, :edit, :update, :destroy, :view]
