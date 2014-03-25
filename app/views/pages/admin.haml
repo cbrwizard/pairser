@@ -15,10 +15,10 @@
     .panel-heading
       Количество запросов на новые сайты
     .panel-body
-      =@parse_requests_count
+      =link_to @parse_requests_count, parse_requests_path
 
   .panel.panel-danger
     .panel-heading
       Количество ошибок запросов
     .panel-body
-      =@site_errors_count
+      =link_to @site_errors_count, site_errors_path

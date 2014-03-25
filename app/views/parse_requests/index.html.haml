@@ -1,5 +1,5 @@
 .page-header
-  %h1= "Запросы на добавлени сайтов"
+  %h1 Запросы на добавление сайтов
 %table.table.table-striped
   %thead
     %tr
@@ -19,6 +19,4 @@
           =link_to "редактировать", edit_parse_request_path(parse_request.id)
         %td
           =link_to "удалить", parse_request, :data => {confirm: 'Точно удалить? Восстановить никак'}, method: :delete
-= link_to 'Новый', |
-  new_parse_request_path,                                |
-  :class => 'btn btn-primary'                            |
+= link_to 'Новый', new_parse_request_path, :class => 'btn btn-primary'

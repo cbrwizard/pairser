@@ -1,0 +1,7 @@
+%p#notice= notice
+%p
+  %strong Domain:
+  = @site_error.domain
+= link_to 'Edit', edit_site_error_path(@site_error)
+|
+\#{link_to 'Back', site_errors_path}

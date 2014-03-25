@@ -13,11 +13,9 @@ class SitesController < ApplicationController
   # @todo create check if correct domain but can't find anything = wrong link
   def parse
 
-    #
-    website = params[:website]
-    website_domain = get_host_without_www(website)
-    site = Site.find_by_domain(website_domain)
-    if site.present?
+    website_domain = get_host_without_www(params[:url])
+    site_instruction = Site.find_by_domain(website_domain)
+    if site_instruction.present?
       #
       browser = Watir::Browser.new :phantomjs
       browser.goto website
@@ -66,15 +64,24 @@ class SitesController < ApplicationController
       if good.persisted?
         redirect_to view_good_path(good.id), notice: 'Вещь добавлена!'
       end
-      # If no instructions on how to parse website found, increate count on requests
-    else
-      parse_request = ParseRequest.where(domain: website_domain).first_or_create
-      parse_request.count += 1
-      parse_request.save
 
-      redirect_to my_goods_path, notice: "Мы пока не можем сохранить информацию с этого сайта. Но это вопрос времени!"
+      # If no instructions on how to parse url found
+    else
+      _form_parse_request(website_domain)
+
+      redirect_to my_goods_path, notice: "Мы пока не можем сохранить информацию с этого сайта. Но это лишь вопрос времени!"
     end
 
+  end
+
+
+  # Creates a parse request for this domain
+  # @note called from sites#parse if no instructions found
+  # @param domain [String] website domain
+  def _form_parse_request(domain)
+    parse_request = ParseRequest.where(domain: domain).first_or_create
+    parse_request.count += 1
+    parse_request.save
   end
 
   # GET /sites

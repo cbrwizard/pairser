@@ -1,0 +1,19 @@
+.page-header
+  %h1 Ошибки парсинга
+%table.table.table-striped
+  %thead
+    %tr
+      %th Domain
+      %th count
+      %th
+      %th
+      %th
+  %tbody
+    - @site_errors.each do |site_error|
+      %tr
+        %td= site_error.domain
+        %td= site_error.count
+        %td= link_to 'Show', site_error
+        %td= link_to 'Edit', edit_site_error_path(site_error)
+        %td= link_to 'Destroy', site_error, method: :delete, data: { confirm: 'Are you sure?' }
+= link_to 'Новый', new_site_error_path, :class => 'btn btn-primary'

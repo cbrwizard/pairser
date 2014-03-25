@@ -6,7 +6,7 @@
       Введи сюда ссылку на понравившуюся тебе вещь, чтобы сохранить её
     =form_tag parse_sites_path, :method => :post, :class => 'form-horizontal' do
       .input-group
-        =text_field_tag :website, '', class: 'form-control', placeholder: 'www.google.com'
+        =text_field_tag :url, '', class: 'form-control', placeholder: 'www.google.com'
         %span.input-group-btn
           =submit_tag 'Вперёд!', class: 'btn btn-default'
   -else
