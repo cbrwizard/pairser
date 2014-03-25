@@ -34,40 +34,54 @@ module Parser
   def parse_without_instructions(browser)
 
     # Finds all images with size > 99px
-    big_images = []
+    all_big_images = []
     browser.images.each do |image|
-      src = image.attribute_value('src')
-      big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      src = image.src
+      all_big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
     end
+    largest_image = all_big_images.max
 
     # Finds largest image
-    main_image_src = big_images.max[1]
+    main_image_src = largest_image[1]
     main_image_element = browser.image(src: main_image_src)
 
-    # Tries to find a common parent of image and headings
-    tmp_parent = main_image_element.parent
-    good_container = false
-    for i in 0 .. 5
-      if tmp_parent.h1.exists? || tmp_parent.h2.exists?
-        good_container = tmp_parent
-        break
-      end
-      tmp_parent = tmp_parent.parent
+    # Checks if src is broken
+    unless main_image_element.exists?
+      # Removes 'http:' from start of src
+      main_image_element = browser.image(src: main_image_src.slice(5..-1))
     end
 
-    text = false
-    # Successfully found a goods container
-    if good_container
-      h1 = good_container.h1
-      # Successfully found h1
-      if h1.exists?
-        text = h1.text
-      else
-        h2 = good_container.h2
-        # Successfully found h2
-        if h2.exists?
+    # If main image dom element was found after all
+    if main_image_element.exists?
+      # Tries to find a common parent of image and headings
+      tmp_parent = main_image_element.parent
+      good_container = false
+      for i in 0 .. 5
+        if tmp_parent.h1.exists? || tmp_parent.h2.exists?
+          good_container = tmp_parent
+          break
+        end
+        tmp_parent = tmp_parent.parent
+      end
+
+      # Successfully found a goods container
+      if good_container
+        h1 = good_container.h1
+        if h1.exists?
+          text = h1.text
+        else
+          h2 = good_container.h2
           text = h2.text
         end
+
+        # Looks for other images in that container
+        big_images = []
+        good_container.images.each do |image|
+          src = image.src
+          big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+        end
+      else
+        text = browser.title
       end
     end
     good
