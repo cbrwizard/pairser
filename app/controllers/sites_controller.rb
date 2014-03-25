@@ -1,14 +1,16 @@
+# Sites admin actions and parse
 class SitesController < ApplicationController
   include Links
   include Access
   include Parser
 
   before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :index, :show]
-
   before_action :set_site, only: [:show, :edit, :update, :destroy]
 
-  # Parses a link and grabs all goods' info
+  # Parses a link and saves all goods' info
+  # @param params[:url] [String]
   # @note POST /sites/parse
+  # @note called from main form on pages#index view
   def parse
     website = params[:url]
     website_domain = get_host_without_www(website)
@@ -24,14 +26,13 @@ class SitesController < ApplicationController
         form_site_error(website_domain)
         redirect_to root_path, alert: "Ошибка. Проверьте правильность ссылки или попробуйте позже. Администраторы уже работают над устранением ошибки!"
       end
-
     # If no instructions on how to parse url found
     else
       form_parse_request(website_domain)
       redirect_to root_path, notice: "Мы пока не можем сохранить информацию с этого сайта. Но это лишь вопрос времени!"
     end
-
   end
+
 
   # GET /sites
   # GET /sites.json

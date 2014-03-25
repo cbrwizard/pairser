@@ -65,7 +65,7 @@ group :development, :test do
 end
 
 # Пагинация
-gem 'will_paginate'
+#gem 'will_paginate'
 
 gem 'devise', github: 'plataformatec/devise'
 

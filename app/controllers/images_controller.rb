@@ -1,3 +1,4 @@
+# Images admin actions
 class ImagesController < ApplicationController
   include Access
   before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :index, :show]

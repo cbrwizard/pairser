@@ -3,9 +3,10 @@
 module Parser
   extend ActiveSupport::Concern
 
-
   # Does the parsing
   # @note is called from sites#parse
+  # @param website [String] url of good
+  # @param site_instruction [Site] site instruction of this website
   def parse_to_good(website, site_instruction)
     browser = prepare_browser(website)
     good = create_good_essential(browser, site_instruction)
@@ -22,15 +23,22 @@ module Parser
   end
 
 
-
   # Creates a browser and visits website
+  # @note is called from Parser#parse_to_good
+  # @param website [String] url of good
+  # @return [Watir::Browser] browser which checks everything
   def prepare_browser(website)
     browser = Watir::Browser.new :phantomjs
     browser.goto website
     browser
   end
 
-  # Creates a good with main info from url
+
+  # Creates a good with main info(text and main image) from url
+  # @note is called from Parser#parse_to_good
+  # @param site_instruction [Site] site instruction of this website
+  # @param browser [Watir::Browser] browser which checks everything
+  # @return [Good] resulting good
   def create_good_essential(browser, site_instruction)
     title = browser.element(css: site_instruction.name_selector).text
 
@@ -39,7 +47,6 @@ module Parser
     main_image = Image.where(website: main_image_path).first_or_create
 
     good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
-
     main_image.good_id = good.id
     main_image.save
     good
@@ -47,7 +54,11 @@ module Parser
 
 
   # Gets other images
+  # @note is called from Parser#parse_to_good
   # @note if there are instructions that there are aditional images on url
+  # @param site_instruction [Site] site instruction of this website
+  # @param browser [Watir::Browser] browser which checks everything
+  # @param good [Good] a good saved with main info
   def parse_other_images(browser, site_instruction, good)
     images = browser.images(css: site_instruction.images_selector)
     images.each do |image|
@@ -62,8 +73,12 @@ module Parser
 
 
   # Gets images from thumbnails
+  # @note is called from Parser#parse_to_good
   # @note if there are instructions that there are aditional images on url in thumbnails
   # @note clicks on thumbnails and gets big versions of them from main image selector
+  # @param site_instruction [Site] site instruction of this website
+  # @param browser [Watir::Browser] browser which checks everything
+  # @param good [Good] a good saved with main info
   def parse_thumbnail_images(browser, site_instruction, good)
     buttons = browser.elements(css: site_instruction.button_selector)
     main_image_object = browser.image(css: site_instruction.main_image_selector)
@@ -83,8 +98,9 @@ module Parser
   end
 
 
-  # Checks size
-  # @param [String] url to image
+  # Checks if image size is okay
+  # @note is called from Parser methods
+  # @param image_path [String] url to image
   # @return [Boolean]
   def is_ok_size?(image_path)
     FastImage.size(image_path)[0] > 99 && FastImage.size(image_path)[1] > 99

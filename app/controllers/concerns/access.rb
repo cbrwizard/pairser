@@ -1,4 +1,4 @@
-# Access module
+# Admin/user access
 module Access
   extend ActiveSupport::Concern
 
@@ -24,5 +24,14 @@ module Access
   # @return [Boolean]
   def belongs_to_user?(good)
     good.user_id == current_user.try(:id)
+  end
+
+
+  # Redirects visitor if not signed in
+  # @note is called on goods/my
+  def require_user_signed_in
+    unless user_signed_in?
+      redirect_to root_path, alert: "Для этого нужно авторизоваться"
+    end
   end
 end

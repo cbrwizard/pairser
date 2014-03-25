@@ -1,28 +1,23 @@
-== README
+== Pairser
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Парсер товаров на Ruby on Rails 4. Достает со страницы заголовок, главное изображение и остальные изображения и сохраняет их юзеру парсера. Для того, чтобы парсер мог работать с сайтом, необходимо написать инструкцию в базе в виде css селекторов текста/изображений и тд. На сайте также есть админка, где идет учет запросов с ошибками и запросов на сайты, к которым еще не создана инструкция.
 
-Things you may want to cover:
+=== Зависимости
 
-* Ruby version
+Чтобы работал парсер, необходимо установить phantomjs на машине:
 
-* System dependencies
+sudo apt-get install phantomjs
 
-* Configuration
+=== Дополнительно
 
-* Database creation
+Можно запустить тесты с помощью команды rspec.
 
-* Database initialization
+=== Todo
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* добавить пагинацию
+* улучшить дизайн
+* сохранять изображения локально
+* больше покрыть тестами
+* добавить социальные фичи
+* оптимизировать повторы
+* сделать api

@@ -1,0 +1,1 @@
+window.searchData = [{"t":"app/assets/javascripts/goods.js.coffee","p":"file/app/assets/javascripts/goods.js.coffee.html"}]

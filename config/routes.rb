@@ -1,5 +1,9 @@
 Pairser::Application.routes.draw do
+  root 'pages#index'
+
   resources :site_errors
+  resources :parse_requests
+  resources :images
 
   resources :goods do
     member do
@@ -10,23 +14,30 @@ Pairser::Application.routes.draw do
     end
   end
 
-  resources :images
-
   resources :sites do
     collection do
       post 'parse'
     end
   end
 
-  resources :parse_requests
+  match 'admin' => 'pages#admin', via: :get
+
+  devise_for :users, skip: [:sessions, :registrations]
+  devise_scope :user do
+    get    "login"   => "devise/sessions#new",         as: :new_user_session
+    post   "login"   => "devise/sessions#create",      as: :user_session
+    delete "signout" => "devise/sessions#destroy",     as: :destroy_user_session
+
+    get    "signup"  => "devise/registrations#new",    as: :new_user_registration
+    post   "signup"  => "devise/registrations#create", as: :user_registration
+    put    "signup"  => "devise/registrations#update", as: :update_user_registration
+    get    "account" => "devise/registrations#edit",   as: :edit_user_registration
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'pages#index'
-
-  match 'admin' => 'pages#admin', via: :get
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -76,18 +87,5 @@ Pairser::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  devise_for :users, skip: [:sessions, :registrations]
-
-  devise_scope :user do
-    get    "login"   => "devise/sessions#new",         as: :new_user_session
-    post   "login"   => "devise/sessions#create",      as: :user_session
-    delete "signout" => "devise/sessions#destroy",     as: :destroy_user_session
-
-    get    "signup"  => "devise/registrations#new",    as: :new_user_registration
-    post   "signup"  => "devise/registrations#create", as: :user_registration
-    put    "signup"  => "devise/registrations#update", as: :update_user_registration
-    get    "account" => "devise/registrations#edit",   as: :edit_user_registration
-  end
 
 end

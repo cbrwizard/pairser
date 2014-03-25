@@ -1,11 +1,12 @@
 class GoodsController < ApplicationController
   include Access
   before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :show, :index]
-
   before_action :require_user_signed_in, only: [:my]
   before_action :set_good, only: [:show, :edit, :update, :destroy, :view]
 
   # List of user' goods
+  # @note user must be signed_in
+  # GET /goods/my
   def my
     @my_goods = current_user.goods
   end
@@ -23,11 +24,11 @@ class GoodsController < ApplicationController
 
 
   # User-friendly view of good
-  # @note sortes images so that main one is first
   # @note GET /goods/1/view
+  # @note sortes images so that main one is first
   def view
     if belongs_to_user?(@good)
-      @good_images = [@good.main_image] + @good.images.where.not(id: @good.main_image_id)
+      @good_images = [@good.main_image] + Image.ad_images_of_good(@good)
       @good_images.flatten!
     else
       redirect_to root_path, alert: 'Это не ваша сохраненная вещь'

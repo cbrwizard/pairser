@@ -1,3 +1,4 @@
+# Site errors admin actions
 class SiteErrorsController < ApplicationController
   before_action :set_site_error, only: [:show, :edit, :update, :destroy]
 

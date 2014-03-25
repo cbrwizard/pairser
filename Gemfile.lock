@@ -201,7 +201,6 @@ GEM
     watir-webdriver (0.6.8)
       selenium-webdriver (>= 2.18.0)
     websocket (1.0.7)
-    will_paginate (3.0.5)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -232,4 +231,3 @@ DEPENDENCIES
   validates_formatting_of
   watir-rails
   watir-rspec
-  will_paginate
