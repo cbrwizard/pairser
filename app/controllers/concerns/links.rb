@@ -1,9 +1,12 @@
-# Модуль для обработки ссылок
+# Links module
 module Links
   extend ActiveSupport::Concern
 
-  # Получает домен без www.
-  # @return [String] домен без www.
+  # Parses domain without www
+  # @param url [String] domain
+  # @example
+  #   website_domain = get_host_without_www('http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html')
+  # @return [String] domain without www.
   def get_host_without_www(url)
     url = "http://#{url}" if URI.parse(url).scheme.nil?
     host = URI.parse(url).host.downcase

@@ -1,4 +1,5 @@
 class GoodsController < ApplicationController
+  include GoodsModule
 
   before_filter :require_user_signed_in, only: [:new, :edit, :create, :update, :destroy, :my]
   layout "admin", only: [:new, :edit, :create, :update, :destroy, :index]
@@ -22,8 +23,16 @@ class GoodsController < ApplicationController
   end
 
 
-  # GET /goods/1/view
+  # User-friendly view of good
+  # @note sortes images so that main one is first
+  # @note GET /goods/1/view
   def view
+    if belongs_to_user?(@good)
+      @good_images = [@good.main_image] + @good.images.where.not(id: @good.main_image_id)
+      @good_images.flatten!
+    else
+      redirect_to root_path, alert: 'Это не ваша сохраненная вещь'
+    end
   end
 
   # GET /goods/new

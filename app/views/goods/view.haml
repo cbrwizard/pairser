@@ -7,7 +7,7 @@
       -@good.images.each_with_index do |image, i|
         %li{"data-slide-to" => i, "data-target" => "#good_view .carousel"}
     .carousel-inner
-      -@good.images.each do |image|
+      -@good_images.each do |image|
         .item
           =image_tag image.website
     %a.left.carousel-control{"data-slide" => "prev", href: "#good_view .carousel"}

@@ -25,10 +25,10 @@ class SitesController < ApplicationController
 
 
       #
-      main_image = Image.where(website: main_image_path).first_or_create
-      good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
+      main_image = Image.where(website: main_image_path).first_or_create!
+      good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create!
       main_image.good_id = good.id
-      main_image.save
+      main_image.save!
 
 
       # If other images are accessable without any actions
@@ -63,7 +63,7 @@ class SitesController < ApplicationController
       end
 
       if good.persisted?
-        redirect_to my_goods_path
+        redirect_to view_good_path(good.id), notice: 'Вещь добавлена!'
       end
       # If no instructions on how to parse website found, increate count on requests
     else

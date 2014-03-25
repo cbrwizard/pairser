@@ -21,6 +21,6 @@
           =link_to "редактировать", edit_good_path(good.id)
         %td
           =link_to "удалить", good, :data => {confirm: 'Точно удалить? Восстановить никак'}, method: :delete
-= link_to t('.new', :default => t("helpers.links.new")), |
+= link_to 'Создать', |
   new_good_path,                                         |
   :class => 'btn btn-primary'                            |
