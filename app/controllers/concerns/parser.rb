@@ -8,8 +8,79 @@ module Parser
   # @param website [String] url of good
   # @param site_instruction [Site] site instruction of this website
   # @return [Good] resulting good
-  def parse_to_good(website, site_instruction)
+  def parse_to_good(website, site_instruction, website_domain)
     browser = prepare_browser(website)
+    begin
+      if site_instruction.present?
+        good = parse_with_instructions(browser, site_instruction)
+      else
+      # If no instructions on how to parse url found
+        good = parse_without_instructions(browser)
+        form_parse_request(website_domain)
+      end
+      # If there was an error during parsing
+    rescue Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::InvalidElementStateError
+      form_site_error(website_domain)
+      redirect_to root_path, alert: "Ошибка. Проверьте правильность ссылки или попробуйте позже. Администраторы уже работают над устранением ошибки!"
+    end
+    good
+  end
+
+
+  # Parses a website without instructions from Site
+  # @note is called from Parser#parse_to_good
+  # @param browser [Watir::Browser] browser which checks everything
+  # @return [Good] resulting good
+  def parse_without_instructions(browser)
+
+    # Finds all images with size > 99px
+    big_images = []
+    browser.images.each do |image|
+      src = image.attribute_value('src')
+      big_images << [FastImage.size(src).inject(:+), src] if FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+    end
+
+    # Finds largest image
+    main_image_src = big_images.max[1]
+    main_image_element = browser.image(src: main_image_src)
+
+    # Tries to find a common parent of image and headings
+    tmp_parent = main_image_element.parent
+    good_container = false
+    for i in 0 .. 5
+      if tmp_parent.h1.exists? || tmp_parent.h2.exists?
+        good_container = tmp_parent
+        break
+      end
+      tmp_parent = tmp_parent.parent
+    end
+
+    text = false
+    # Successfully found a goods container
+    if good_container
+      h1 = good_container.h1
+      # Successfully found h1
+      if h1.exists?
+        text = h1.text
+      else
+        h2 = good_container.h2
+        # Successfully found h2
+        if h2.exists?
+          text = h2.text
+        end
+      end
+    end
+    good
+  end
+
+
+  # Parses a website following instructions from Site
+  # @note is called from Parser#parse_to_good
+  # @param browser [Watir::Browser] browser which checks everything
+  # @param site_instruction [Site] site instruction of this website
+  # @see Site
+  # @return [Good] resulting good
+  def parse_with_instructions(browser, site_instruction)
     good = create_good_essential(browser, site_instruction)
 
     # If other images are accessable without any actions
@@ -30,6 +101,7 @@ module Parser
   # @return [Watir::Browser] browser which checks everything
   def prepare_browser(website)
     browser = Watir::Browser.new :phantomjs
+    browser.window.resize_to(2000, 2000)
     browser.goto website
     browser
   end

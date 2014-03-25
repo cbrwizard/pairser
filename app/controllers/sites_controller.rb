@@ -15,20 +15,10 @@ class SitesController < ApplicationController
     website = params[:url]
     website_domain = get_host_without_www(website)
     site_instruction = Site.find_by_domain(website_domain)
-    if site_instruction.present?
-      begin
-        good = parse_to_good(website, site_instruction)
-        if good.persisted?
-          redirect_to view_good_path(good.id), notice: 'Вещь добавлена!'
-        end
-      # If there was an error during parsing
-      rescue Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::InvalidElementStateError
-        form_site_error(website_domain)
-        redirect_to root_path, alert: "Ошибка. Проверьте правильность ссылки или попробуйте позже. Администраторы уже работают над устранением ошибки!"
-      end
-    # If no instructions on how to parse url found
+    good = parse_to_good(website, site_instruction, website_domain)
+    if good.persisted?
+      redirect_to view_good_path(good.id), notice: 'Вещь добавлена!'
     else
-      form_parse_request(website_domain)
       redirect_to root_path, notice: "Мы пока не можем сохранить информацию с этого сайта. Но это лишь вопрос времени!"
     end
   end
