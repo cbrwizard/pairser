@@ -38,28 +38,49 @@ module Parser
     all_big_images = []
     browser.images.each do |image|
       src = image.src
-      all_big_images << [FastImage.size(src).inject(:+), src] if image.visible? && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      all_big_images << [FastImage.size(src).inject(:+), src] if image.visible? && [:gif, :png, :jpeg, :bmp, :tiff].include?(FastImage.type(src)) && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
       break if all_big_images.length >= 30 # in case of huge number of images
     end
+    all_big_images.uniq!
     largest_image = all_big_images.max
 
     # Finds largest image
     main_image_src = largest_image[1]
     main_image_element = browser.image(src: main_image_src)
 
-    # def check_image
+    # def check_image(image_element, src)
+    main_image_exists = false
     # Checks if src is broken
-    unless main_image_element.exists?
-      #TODO: remove domain and try to find. if none - remove http://
-      #main_image_src = main_image_src - get_host_without_www(main_image_src)
+    if main_image_element.exists?
+      main_image_exists = true
+    else
       # Removes 'http:' from start of src
-      unless main_image_element.exists?
-        main_image_element = browser.image(src: main_image_src.slice(5..-1))
+      unless main_image_exists
+        main_image_element = browser.image(src: main_image_src.sub(/^https?\:/, ''))
+        if main_image_element.exists?
+          main_image_exists = true
+        end
+      end
+
+      # Removes http and www from start of src
+      unless main_image_exists
+        main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,''))
+        if main_image_element.exists?
+          main_image_exists = true
+        end
+      end
+
+      # Removes http and www and domain from start of src
+      unless main_image_exists
+        main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(main_image_src), ''))
+        if main_image_element.exists?
+          main_image_exists = true
+        end
       end
     end
 
     # If main image dom element was found after all
-    if main_image_element.exists?
+    if main_image_exists
 
       # Tries to find a common parent of image and headings
       tmp_parent = main_image_element.parent
@@ -105,12 +126,41 @@ module Parser
         src = image[1]
         image_element = good_container.image(src: src)
 
+        image_exists = false
+        # Checks if src is broken
+        if image_element.exists?
+          image_exists = true
+        else
+          # Removes 'http:' from start of src
+          unless image_exists
+            image_element = good_container.image(src: src.sub(/^https?\:/, ''))
+            if image_element.exists?
+              image_exists = true
+            end
+          end
+
+          # Removes http and www from start of src
+          unless image_exists
+            image_element = good_container.image(src: src.sub(/^https?\:\/\//, '').sub(/^www./,''))
+            if image_element.exists?
+              image_exists = true
+            end
+          end
+
+          # Removes http and www and domain from start of src
+          unless image_exists
+            image_element = good_container.image(src: src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(src), ''))
+            if image_element.exists?
+              image_exists = true
+            end
+          end
+        end
         # Checks if src is broken
         unless image_element.exists?
 
           # Removes 'http:' from start of src
           unless image_element.exists?
-            image_element = browser.image(src: image[1].slice(5..-1))
+            image_element = good_container.image(src: image[1].slice(5..-1))
           end
         end
         big_images << image if src != main_image_src && image_element.exists?
