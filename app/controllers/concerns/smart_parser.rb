@@ -9,14 +9,6 @@ module SmartParser
   # @param website [String] url of good
   # @return [Good] resulting good
   def parse_without_instructions(browser, website)
-    #browser.goto 'http://www.pinterest.com/pin/219761656791055032/'
-    #browser.goto 'http://www.wildberries.ru/catalog/1265257/detail.aspx'
-    #browser.goto 'http://www.pandora.net/en-us/explore/products/bracelets#!590715CSP-M'
-    #browser.goto 'http://www.net-a-porter.com/product/367278?cm_sp=we_recommend-_-367278-_-slot2'
-    #browser.goto 'http://www.boden.co.uk/en-GB/Mens-Shirts/Semi-Fitted/MA397-PNK/Mens-Pink-Stripe-Washed-Oxford-Shirt.html?orcid=-71#cs0'
-    #browser.goto 'http://valerygold.ru/magazin/product/kolco-0341.2.0.0-8'
-    #browser.goto 'http://www.incity.ru/catalog/oz_13/vo_iskusstvennaya_koja/395948.html'
-    #browser.goto 'http://brainlook.org/opinion/2099'
 
     main_image_exists, good_container, big_images, text = prepare_variables
 
