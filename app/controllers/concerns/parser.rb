@@ -33,7 +33,13 @@ module Parser
   # @param browser [Watir::Browser] browser which checks everything
   # @return [Good] resulting good
   def parse_without_instructions(browser)
-    browser.goto 'http://www.incity.ru/catalog/oz_13/vo_iskusstvennaya_koja/395948.html'
+    #browser.goto 'http://www.pinterest.com/pin/219761656791055032/'
+    #browser.goto 'http://www.wildberries.ru/catalog/1265257/detail.aspx'
+    #browser.goto 'http://www.pandora.net/en-us/explore/products/bracelets#!590715CSP-M'
+    browser.goto 'http://www.net-a-porter.com/product/413900/Frame_Denim/le-garcon-mid-rise-slim-boyfriend-jeans'
+    #browser.goto 'http://www.boden.co.uk/en-GB/Mens-Shirts/Semi-Fitted/MA397-PNK/Mens-Pink-Stripe-Washed-Oxford-Shirt.html?orcid=-71#cs0'
+    #browser.goto 'http://valerygold.ru/magazin/product/kolco-0341.2.0.0-8'
+    #browser.goto 'http://www.incity.ru/catalog/oz_13/vo_iskusstvennaya_koja/395948.html'
     # Finds all images with size > 99px
     all_big_images = []
     browser.images.each do |image|
@@ -117,11 +123,11 @@ module Parser
       end
     end
 
+    big_images = []
     # Successfully found a goods container
     if good_container
       # Looks for other images in that container
 
-      big_images = []
       all_big_images.each do |image|
         src = image[1]
         image_element = good_container.image(src: src)
@@ -168,6 +174,17 @@ module Parser
     else
       text = browser.title
     end
+
+    meta_images = []
+    metas = browser.elements(css: "meta[property='og:image']")
+    metas.each do |meta_image|
+      src = meta_image.attribute_value('content')
+      meta_images << src if [:gif, :png, :jpeg, :bmp, :tiff].include?(FastImage.type(src)) && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      break if meta_images.length >= 30 # in case of huge number of images
+    end
+    big_images.concat meta_images
+    big_images.uniq!
+
     main_image_src
     text
     big_images
