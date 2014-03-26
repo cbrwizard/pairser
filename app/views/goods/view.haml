@@ -1,5 +1,5 @@
 #good_view
   %h1
-    =@good.name
+    =link_to @good.name, @good.website, target: "_blank"
 
   =render partial: 'goods/view/carousel', locals: {good_images: @good_images}

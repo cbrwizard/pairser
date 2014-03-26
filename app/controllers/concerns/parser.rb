@@ -15,10 +15,10 @@ module Parser
     browser = prepare_browser(website)
     begin
       if site_instruction.present?
-        good = parse_with_instructions(browser, site_instruction)
+        good = parse_with_instructions(browser, site_instruction, website)
       else
       # If no instructions on how to parse url found
-        good = parse_without_instructions(browser)
+        good = parse_without_instructions(browser, website)
         form_parse_request(website_domain)
       end
       # If there was an error during parsing

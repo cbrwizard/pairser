@@ -6,10 +6,11 @@ module ManualParser
   # @note is called from Parser#parse_to_good
   # @param browser [Watir::Browser] browser which checks everything
   # @param site_instruction [Site] site instruction of this website
+  # @param website [String] url of good
   # @see Site
   # @return [Good] resulting good
-  def parse_with_instructions(browser, site_instruction)
-    good = create_good_essential(browser, site_instruction)
+  def parse_with_instructions(browser, site_instruction, website)
+    good = create_good_essential(browser, site_instruction, website)
 
     # If other images are accessable without any actions
     if site_instruction.images_selector.present?
@@ -27,15 +28,16 @@ module ManualParser
   # @note is called from Parser#parse_to_good
   # @param site_instruction [Site] site instruction of this website
   # @param browser [Watir::Browser] browser which checks everything
+  # @param website [String] url of good
   # @return [Good] resulting good
-  def create_good_essential(browser, site_instruction)
+  def create_good_essential(browser, site_instruction, website)
     title = browser.element(css: site_instruction.name_selector).text
 
     main_image_object = browser.image(css: site_instruction.main_image_selector)
     main_image_path = main_image_object.attribute_value('src')
     main_image = Image.create(website: main_image_path)
 
-    good = current_user.goods.where(name: title, main_image_id: main_image.id).first_or_create
+    good = current_user.goods.where(name: title, main_image_id: main_image.id, website: website).first_or_create
     main_image.good_id = good.id
     main_image.save
     good

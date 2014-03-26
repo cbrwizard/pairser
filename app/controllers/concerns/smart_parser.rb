@@ -5,8 +5,9 @@ module SmartParser
   # Parses a website without instructions from Site
   # @note is called from Parser#parse_to_good
   # @param browser [Watir::Browser] browser which checks everything
+  # @param website [String] url of good
   # @return [Good] resulting good
-  def parse_without_instructions(browser)
+  def parse_without_instructions(browser, website)
     #browser.goto 'http://www.pinterest.com/pin/219761656791055032/'
     #browser.goto 'http://www.wildberries.ru/catalog/1265257/detail.aspx'
     #browser.goto 'http://www.pandora.net/en-us/explore/products/bracelets#!590715CSP-M'
@@ -14,47 +15,52 @@ module SmartParser
     #browser.goto 'http://www.boden.co.uk/en-GB/Mens-Shirts/Semi-Fitted/MA397-PNK/Mens-Pink-Stripe-Washed-Oxford-Shirt.html?orcid=-71#cs0'
     #browser.goto 'http://valerygold.ru/magazin/product/kolco-0341.2.0.0-8'
     #browser.goto 'http://www.incity.ru/catalog/oz_13/vo_iskusstvennaya_koja/395948.html'
+    #browser.goto 'http://brainlook.org/opinion/2099'
     # Finds all images with size > 99px
+
+    main_image_exists = false
+
     all_big_images = []
     browser.images.each do |image|
       src = image.src
-      all_big_images << [FastImage.size(src).inject(:+), src] if image.visible? && [:gif, :png, :jpeg, :bmp, :tiff].include?(FastImage.type(src)) && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
+      all_big_images << [FastImage.size(src).inject(:+), src] if image.visible? && [:gif, :png, :jpeg, :bmp, :tiff, :svg].include?(FastImage.type(src)) && FastImage.size(src)[0] > 99 && FastImage.size(src)[1] > 99
       break if all_big_images.length >= 30 # in case of huge number of images
     end
     all_big_images.uniq!
     largest_image = all_big_images.max
 
     # Finds largest image
-    main_image_src = largest_image[1]
-    main_image_element = browser.image(src: main_image_src)
+    unless largest_image.blank?
+      main_image_src = largest_image[1]
+      main_image_element = browser.image(src: main_image_src)
 
-    # def check_image(image_element, src)
-    main_image_exists = false
-    # Checks if src is broken
-    if main_image_element.exists?
-      main_image_exists = true
-    else
-      # Removes 'http:' from start of src
-      unless main_image_exists
-        main_image_element = browser.image(src: main_image_src.sub(/^https?\:/, ''))
-        if main_image_element.exists?
-          main_image_exists = true
+      # def check_image(image_element, src)
+      # Checks if src is broken
+      if main_image_element.exists?
+        main_image_exists = true
+      else
+        # Removes 'http:' from start of src
+        unless main_image_exists
+          main_image_element = browser.image(src: main_image_src.sub(/^https?\:/, ''))
+          if main_image_element.exists?
+            main_image_exists = true
+          end
         end
-      end
 
-      # Removes http and www from start of src
-      unless main_image_exists
-        main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,''))
-        if main_image_element.exists?
-          main_image_exists = true
+        # Removes http and www from start of src
+        unless main_image_exists
+          main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,''))
+          if main_image_element.exists?
+            main_image_exists = true
+          end
         end
-      end
 
-      # Removes http and www and domain from start of src
-      unless main_image_exists
-        main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(main_image_src), ''))
-        if main_image_element.exists?
-          main_image_exists = true
+        # Removes http and www and domain from start of src
+        unless main_image_exists
+          main_image_element = browser.image(src: main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(main_image_src), ''))
+          if main_image_element.exists?
+            main_image_exists = true
+          end
         end
       end
     end
@@ -161,18 +167,25 @@ module SmartParser
 
 
     # Finds copy of main image without domain, etc
-    big_images_rel_paths = big_images.map{|img| img[1].sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(img[1]), '')}
-    main_image_rel_path = main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(main_image_src), '')
+    if main_image_exists
+      big_images_rel_paths = big_images.map{|img| img[1].sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(img[1]), '')}
+      main_image_rel_path = main_image_src.sub(/^https?\:\/\//, '').sub(/^www./,'').sub(get_host_without_www(main_image_src), '')
 
-    big_images.delete_at big_images_rel_paths.index(main_image_rel_path)
+      big_images.delete_at big_images_rel_paths.index(main_image_rel_path)
+    end
 
     main_image_src
     text
     big_images
 
     #
-    main_image = Image.create(website: main_image_src)
-    good = current_user.goods.where(name: text, main_image_id: main_image.id).first_or_create
+    if main_image_exists
+      main_image = Image.create(website: main_image_src)
+    else
+      main_image = Image.create(website: big_images[0][1])
+      big_images.delete_at(0)
+    end
+    good = current_user.goods.where(name: text, main_image_id: main_image.id, website: website).first_or_create
     main_image.good_id = good.id
     main_image.save
 
