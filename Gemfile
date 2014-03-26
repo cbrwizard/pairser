@@ -77,5 +77,8 @@ gem "watir-rails"
 # sudo apt-get install phantomjs
 # для тестирования без gui
 
-# Получает размер изображений
+# Получает размер и тип изображений
 gem 'fastimage'
+
+# Админка
+gem 'rails_admin'

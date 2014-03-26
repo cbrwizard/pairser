@@ -24,27 +24,6 @@ describe "parsing", :type => :feature do
   end
 
 
-  it "should increase error count during failed parsing" do
-
-    visit '/login'
-    within("#new_user") do
-      fill_in 'user_email', :with => 'admin@lol.ru'
-      fill_in 'user_password', :with => 'qwerty'
-    end
-    click_button 'Войти'
-
-    errors_before = SiteError.errors_count
-
-    within("#parse-form") do
-      fill_in :url, with: 'http://www.net-a-porter.com/'
-    end
-    click_button 'Вперёд!'
-
-    errors_after = SiteError.errors_count
-    errors_before.should_not == errors_after
-  end
-
-
   it "should parse net-a-porter" do
 
     visit '/login'

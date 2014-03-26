@@ -1,4 +1,5 @@
 Pairser::Application.routes.draw do
+  mount RailsAdmin::Engine => '/admin_gem', :as => 'rails_admin'
   root 'pages#index'
 
   resources :site_errors
