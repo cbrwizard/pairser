@@ -5,6 +5,7 @@ class SitesController < ApplicationController
   include Parser
 
   before_action :require_admin, only: [:new, :edit, :create, :update, :destroy, :index, :show]
+  before_action :require_user_signed_in, only: [:parse]
   before_action :set_site, only: [:show, :edit, :update, :destroy]
 
   # Parses a link and saves all goods' info

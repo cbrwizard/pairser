@@ -52,6 +52,15 @@ module Parser
   end
 
 
+  # Checks if image type is an actual image
+  # @note is called from Parser methods
+  # @param image_path [String] url to image
+  # @return [Boolean]
+  def is_ok_type?(image_path)
+    [:gif, :png, :jpeg, :bmp, :tiff, :svg].include?(FastImage.type(image_path))
+  end
+
+
   # Creates a parse request for this domain
   # @note called from sites#parse if no instructions found
   # @param domain [String] website domain
